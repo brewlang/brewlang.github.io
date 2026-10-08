@@ -1,0 +1,22 @@
+{
+  "name": "brewlang-site",
+  "version": "0.0.1",
+  "private": true,
+  "description": "brewlang.github.io: the Brewlang home page and its documentation",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "vitest run"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@astrojs/starlight": "^0.42.5",
+    "astro": "^7.3.8",
+    "brewlang": "file:../brewlang/packages/brewlang"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.3"
+  }
+}
