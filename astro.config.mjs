@@ -2,6 +2,7 @@
 import { readFileSync } from "node:fs";
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+import { addBrewColors } from "./brew-theme.mjs";
 
 // The .brew grammar, for the ```brew blocks of the docs
 const brew = JSON.parse(readFileSync(new URL("./brew.tmLanguage.json", import.meta.url), "utf8"));
@@ -17,7 +18,7 @@ export default defineConfig({
       description: "A plain-text markup language for coffee brewing recipes.",
       social: [{ icon: "github", label: "GitHub", href: "https://github.com/brewlang/brewlang" }],
       editLink: { baseUrl: "https://github.com/brewlang/brewlang.github.io/edit/main/" },
-      expressiveCode: { shiki: { langs: [brew] } },
+      expressiveCode: { shiki: { langs: [brew] }, customizeTheme: addBrewColors },
       sidebar: [
         { label: "Overview", link: "/doc/" },
         {
