@@ -25,6 +25,6 @@ description: Brewlang recipes as versioned JSON, described by a JSON Schema.
 - **Lossless:** everything the recipe says is kept: added pours (`add_water`), temperature changes (`"kind": "temp"`), comments, and the unit a duration was written in. Only the layout, like blank lines, is not.
 - **Metadata:** the frontmatter's simple `key: value` lines, as text. Any other line is left out, with a warning.
 - **Grind:** on the recipe, not among the steps.
-- **Field names** follow [CoffeeJSON](https://coffeejson.org/) where the two formats overlap (`coffee`, `water_temp`, `at_s`, `to_water`, `action_duration_s`, units spelled out, ranges as `min` and `max`), so a future bridge stays simple.
+- **Values:** units are spelled out (`gram`, `celsius`), ranges are `min` and `max`, and times are in seconds (`at_s`, `action_duration_s`).
 
 A change to the format comes with a new version number and a new schema.
