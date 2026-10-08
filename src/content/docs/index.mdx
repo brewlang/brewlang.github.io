@@ -1,0 +1,44 @@
+---
+title: Brewlang
+description: A plain-text markup language for coffee brewing recipes.
+template: splash
+hero:
+  tagline: Write a coffee recipe the way you note it in a notebook. Get a recipe a tool can check, scale to your dose and show as a card.
+  actions:
+    - text: Try it in the playground
+      link: /playground/
+      icon: right-arrow
+    - text: Read the docs
+      link: /doc/
+      variant: minimal
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+```brew
+@V60 15g 250g 94°C
+grind medium-fine
+
+/rinse
+0:00 50g ~10s bloom center
+0:45 150g ~15s spiral
+1:30 250g ~20s center
+2:00 /swirl
+
+target 3:00
+```
+
+<CardGrid>
+  <Card title="Readable by anyone" icon="pencil">
+    One step per line, the amounts your scale shows, gestures written with `/`. No code to learn.
+  </Card>
+  <Card title="Checked as you type" icon="approve-check">
+    Errors say what to fix: a pour that goes down, a valve already open, a typo in `/swril`.
+  </Card>
+  <Card title="Scaled to your dose" icon="random">
+    Brew the same recipe with 20 g instead of 15 g, or in ounces and Fahrenheit.
+  </Card>
+  <Card title="Ready for apps" icon="puzzle">
+    A JavaScript library, a recipe card element and a versioned JSON output.
+  </Card>
+</CardGrid>
