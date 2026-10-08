@@ -10,42 +10,40 @@
     { "include": "#action" },
     { "include": "#duration" },
     { "include": "#time" },
-    { "include": "#quantity" },
-    { "include": "#word" }
+    { "include": "#temperature" },
+    { "include": "#amount" },
+    { "include": "#qualifier" },
+    { "include": "#grind" }
   ],
   "repository": {
     "frontmatter": {
-      "begin": "\\A---\\s*$",
-      "end": "^---\\s*$",
-      "name": "comment.block.frontmatter.brew",
+      "begin": "\\A(---)\\s*$",
+      "end": "^(---)\\s*$",
+      "beginCaptures": { "1": { "name": "punctuation.definition.frontmatter.brew" } },
+      "endCaptures": { "1": { "name": "punctuation.definition.frontmatter.brew" } },
       "patterns": [
         {
           "match": "^([\\w-]+)(:)(.*)$",
           "captures": {
-            "1": { "name": "entity.name.tag.brew" },
-            "2": { "name": "punctuation.separator.brew" },
-            "3": { "name": "string.unquoted.brew" }
+            "1": { "name": "entity.name.tag.frontmatter.brew" },
+            "2": { "name": "entity.name.tag.frontmatter.brew" },
+            "3": { "name": "string.unquoted.frontmatter.brew" }
           }
         }
       ]
     },
     "comment": { "match": "--.*$", "name": "comment.line.double-dash.brew" },
     "brewer": { "match": "@[A-Za-z][\\w-]*", "name": "entity.name.class.brewer.brew" },
-    "keyword": { "match": "\\b(grind|target)\\b", "name": "keyword.control.brew" },
+    "keyword": { "match": "^\\s*(grind|target)\\b", "captures": { "1": { "name": "keyword.control.brew" } } },
     "action": { "match": "/[A-Za-z][\\w-]*", "name": "entity.name.function.action.brew" },
-    "duration": { "match": "~(\\d+(\\.\\d+)?[sm]|\\d+:\\d\\d)", "name": "constant.numeric.duration.brew" },
+    "duration": { "match": "~(\\d+(\\.\\d+)?[sm]|\\d+:\\d\\d)\\b", "name": "constant.numeric.duration.brew" },
     "time": { "match": "\\b\\d+:\\d\\d\\b", "name": "constant.numeric.time.brew" },
-    "quantity": {
-      "match": "(\\+)?(\\d+(?:\\.\\d+)?(?:-\\d+(?:\\.\\d+)?)?)(°C|°F|floz|ml|oz|g)",
-      "captures": {
-        "1": { "name": "keyword.operator.brew" },
-        "2": { "name": "constant.numeric.brew" },
-        "3": { "name": "keyword.other.unit.brew" }
-      }
-    },
-    "word": {
-      "match": "\\b(bloom|spiral|center|pulse|extra-fine|medium-fine|medium-coarse|extra-coarse|fine|medium|coarse)\\b",
-      "name": "support.constant.brew"
+    "temperature": { "match": "\\d+(\\.\\d+)?(-\\d+(\\.\\d+)?)?°[CF]", "name": "constant.numeric.temperature.brew" },
+    "amount": { "match": "\\+?\\d+(\\.\\d+)?(-\\d+(\\.\\d+)?)?(floz|ml|oz|g)\\b", "name": "constant.numeric.amount.brew" },
+    "qualifier": { "match": "\\b(bloom|spiral|center|pulse)\\b", "name": "support.constant.qualifier.brew" },
+    "grind": {
+      "match": "\\b(extra-fine|medium-fine|medium-coarse|extra-coarse|fine|medium|coarse)\\b",
+      "name": "support.constant.grind.brew"
     }
   }
 }
