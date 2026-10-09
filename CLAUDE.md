@@ -16,6 +16,10 @@ brewlang.github.io is the site of Brewlang, the `.brew` coffee recipe language: 
 - `src/pages/llms.txt.ts` serves `../brewlang/docs/llms.txt` (a `?raw` import; `vite.server.fs.allow: [".."]` lets the dev server read it). `llms.txt` stays in the brewlang repo, tested with the language and also served by the playground. Change it there.
 - `.github/workflows/deploy.yml` checks out both repos side by side, builds brewlang, tests and builds the site, and publishes it on GitHub Pages from `main`. It also runs weekly, so a language change that breaks the docs shows up.
 
+## Analytics
+
+Cloudflare Web Analytics counts visits, without cookies: its script is added to every page by `head` in `astro.config.mjs`. The playground loads the same script with the same token, so both show in one Cloudflare dashboard.
+
 ## Content
 
 - `src/content/docs/index.mdx` — the home page, a Starlight `splash` page for now (a custom design may replace it in `src/pages/`).

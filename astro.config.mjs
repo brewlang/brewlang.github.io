@@ -17,6 +17,17 @@ export default defineConfig({
       title: "Brewlang",
       description: "A plain-text markup language for coffee brewing recipes.",
       social: [{ icon: "github", label: "GitHub", href: "https://github.com/brewlang/brewlang" }],
+      // Cloudflare Web Analytics: cookieless visit counts; the playground uses the same token
+      head: [
+        {
+          tag: "script",
+          attrs: {
+            type: "module",
+            src: "https://static.cloudflareinsights.com/beacon.min.js",
+            "data-cf-beacon": '{"token": "bead6919586742c4abb3fe181d4c1385"}',
+          },
+        },
+      ],
       editLink: { baseUrl: "https://github.com/brewlang/brewlang.github.io/edit/main/" },
       expressiveCode: { shiki: { langs: [brew] }, customizeTheme: addBrewColors },
       sidebar: [
