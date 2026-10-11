@@ -57,6 +57,7 @@ toJson(recipe).json;                                  // plain data
 | `scale(recipe, factor)` | Every amount multiplied by `factor` |
 | `scaleToDose(recipe, { value, unit })` | Scaled to a new dose |
 | `scaleToWater(recipe, { value, unit })` | Scaled to a new total water |
+| `totalWater(recipe)` | The total water as `{ low, high, unit }`: the header's, or where the pours end; `low` and `high` differ when it ends on a range |
 | `convert(recipe, { dose, water, temp })` | The same recipe in other units |
 | `toJson(recipe)` | The recipe as [JSON](/doc/integrate/json/) |
 
