@@ -1089,6 +1089,37 @@ body.home {
   }
   .brewers {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .brewers li {
+    gap: 12px;
+    padding: 16px 14px;
+    font-size: 15px;
+    overflow-wrap: anywhere;
+  }
+  .brewers svg {
+    width: 36px;
+    height: 36px;
+  }
+  /* "and more" across the row: the plus, then the words and the note beside it */
+  .home .brewers .brewers-more {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 14px;
+    row-gap: 2px;
+    align-items: center;
+  }
+  .brewers-more .plus {
+    grid-row: span 2;
+  }
+  /* The code of the two rotating cards, smaller to fit the width */
+  .jot-part > span:first-child,
+  .header-line {
+    font-size: 17px;
+  }
+  .arg .panel-pad {
+    padding: 18px;
   }
   .workbench {
     grid-template-columns: minmax(0, 1fr);
