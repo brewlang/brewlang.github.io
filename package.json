@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@astrojs/starlight": "^0.42.5",
+    "@brewlang/render": "file:../brewlang/packages/render",
     "astro": "^7.3.8",
     "brewlang": "file:../brewlang/packages/brewlang"
   },

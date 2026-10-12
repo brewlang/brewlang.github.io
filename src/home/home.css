@@ -1,0 +1,1097 @@
+/* The home page's own look: Bricolage Grotesque and JetBrains Mono, a coffee-cherry red. Light code
+ * panels on the light theme, dark ones on the dark theme. The recipe cards are @brewlang/render's,
+ * mapped onto these tokens through their --brew-* variables. */
+
+:root {
+  --bg: #f4f3ef;
+  --surf: #ffffff;
+  --ink: #141210;
+  --mute: #5f5a52;
+  --line: #dcd7cd;
+  --soft: #ece9e2;
+  --acc: #d42e3b;
+  --acc-ink: #a5242e;
+  --acc-tint: #f9e2e4;
+  --on-acc: #ffffff;
+
+  /* Code panels */
+  --panel: #ece8e0;
+  --c-border: #dcd6ca;
+  --c-plain: #2a2520;
+  --c-gutter: #b0a898;
+  --c-file: #6e665b;
+  --c-label: #7d7366;
+  --c-brewer: var(--acc-ink);
+  --c-punct: #a39c90;
+  --c-fmkey: #7a7064;
+  --c-fmval: #8a5a12;
+  --c-time: #9a6100;
+  --c-amount: #17795e;
+  --c-temp: #17795e;
+  --c-dur: #3f8c77;
+  --c-action: #6b3fc4;
+  --c-kw: #b4471b;
+  --c-qual: #3d6584;
+  --c-grind: #3d6584;
+  --c-comment: #7d7366;
+  --c-err: #c8336a;
+  --c-err-text: #a3204f;
+  --c-err-bg: rgba(200, 51, 106, 0.1);
+
+  --chip: #3d6584;
+  --chip-line: #c9d6e2;
+
+  --display: "Bricolage Grotesque", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #12110f;
+  --surf: #1b1916;
+  --ink: #f1ede5;
+  --mute: #a39c90;
+  --line: #34302a;
+  --soft: #201e1a;
+  --acc: #d8434f;
+  --acc-ink: #e16d76;
+  --acc-tint: #361f1e;
+
+  --panel: #0b0a08;
+  --c-border: #2b2620;
+  --c-plain: #e9e3d8;
+  --c-gutter: #5c544a;
+  --c-file: #a39886;
+  --c-label: #8a8073;
+  --c-brewer: #dd5862;
+  --c-punct: #6e665b;
+  --c-fmkey: #9c9282;
+  --c-fmval: #e9d5a8;
+  --c-time: #f5c451;
+  --c-amount: #8fd8c0;
+  --c-temp: #8fd8c0;
+  --c-dur: #6fb8a3;
+  --c-action: #c9a8ff;
+  --c-kw: #ff9c73;
+  --c-qual: #a9c3dd;
+  --c-grind: #a9c3dd;
+  --c-comment: #847a6d;
+  --c-err: #ff5c93;
+  --c-err-text: #ffc1d6;
+  --c-err-bg: rgba(255, 92, 147, 0.12);
+
+  --chip: #a9c3dd;
+  --chip-line: #3a4b5c;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body.home {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.5 var(--display);
+  -webkit-font-smoothing: antialiased;
+}
+
+.home a {
+  color: inherit;
+  text-decoration: none;
+}
+.home a:hover {
+  color: var(--acc-ink);
+}
+.home h1,
+.home h2,
+.home h3 {
+  margin: 0;
+  font-weight: 700;
+}
+.home :focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline: 40px;
+}
+
+/* Buttons */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 24px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font: 600 17px var(--display);
+  cursor: pointer;
+  background: transparent;
+  color: var(--ink);
+}
+.button-small {
+  height: 44px;
+  padding: 0 18px;
+  font-size: 15px;
+}
+.home .button-accent {
+  background: var(--acc);
+  color: var(--on-acc);
+}
+.home .button-accent:hover {
+  color: var(--on-acc);
+  filter: brightness(1.08);
+}
+.home .button-ink {
+  background: var(--ink);
+  color: var(--bg);
+}
+.home .button-ink:hover {
+  color: var(--bg);
+}
+.button-outline {
+  border-color: var(--ink);
+}
+.home .button-outline-light {
+  border-color: var(--bg);
+  color: var(--bg);
+}
+.icon-button {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* Theme-dependent bits */
+:root[data-theme="dark"] .icon-moon,
+:root:not([data-theme="dark"]) .icon-sun,
+:root[data-theme="dark"] .if-light,
+:root:not([data-theme="dark"]) .if-dark {
+  display: none;
+}
+#menu-button[aria-expanded="true"] .icon-burger,
+#menu-button[aria-expanded="false"] .icon-close {
+  display: none;
+}
+
+/* Top bar */
+.topbar {
+  border-bottom: 1px solid var(--line);
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 72px;
+}
+.wordmark {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  font-size: 15px;
+  font-weight: 500;
+}
+.nav-links .button {
+  height: 40px;
+  padding: 0 16px;
+  font-size: 15px;
+}
+.llms-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.llms-tag {
+  font: 13px var(--mono);
+  padding: 3px 7px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.narrow-only {
+  display: none;
+}
+.menu {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 16px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.menu[hidden] {
+  display: none;
+}
+.menu > a:not(.button),
+.menu > button {
+  padding: 12px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.menu .button {
+  margin-top: 8px;
+}
+
+/* Hero */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  grid-template-areas: "text demo" "cta demo" "chips demo";
+  grid-template-rows: auto auto 1fr;
+  column-gap: 56px;
+  align-items: start;
+  padding-top: 72px;
+  padding-bottom: 96px;
+}
+.hero-text {
+  grid-area: text;
+  padding-top: 40px;
+}
+.hero-cta {
+  grid-area: cta;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 36px;
+}
+.hero-chips {
+  grid-area: chips;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 28px 0 0;
+  font: 13px var(--mono);
+  color: var(--mute);
+}
+.hero-chips li {
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.hero-demo {
+  grid-area: demo;
+  min-width: 0;
+}
+.kicker {
+  margin: 0 0 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 14px var(--mono);
+  color: var(--mute);
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--acc);
+}
+.hero h1 {
+  font-size: 60px;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+.home h1 em,
+.closing h2 em {
+  font-family: var(--mono);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  color: var(--acc-ink);
+}
+.lead {
+  margin: 32px 0 0;
+  max-width: 620px;
+  font-size: 21px;
+  line-height: 1.5;
+  color: var(--mute);
+}
+
+/* The hero's code and card, overlapping */
+.tabs {
+  display: none;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  width: max-content;
+}
+.tabs button {
+  height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: 600 14px var(--display);
+  cursor: pointer;
+}
+.tabs button[aria-selected="true"] {
+  background: var(--acc-tint);
+  color: var(--acc-ink);
+}
+.stage {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-content: start;
+}
+.stage-code {
+  grid-column: 1 / 9;
+  grid-row: 1;
+}
+.stage-card {
+  grid-column: 6 / 13;
+  grid-row: 1;
+  margin-top: 64px;
+  position: relative;
+  z-index: 1;
+}
+.stage-hint {
+  grid-column: 6 / 13;
+  grid-row: 2;
+  margin: 20px 0 0;
+  font-size: 15px;
+  color: var(--mute);
+}
+.home .stage-hint a {
+  color: var(--acc-ink);
+  font-weight: 600;
+}
+.demo-label {
+  margin-bottom: 10px;
+  font: 12px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.demo-label-end {
+  text-align: right;
+}
+.lifted .brew-card {
+  box-shadow: 0 24px 48px -12px rgba(20, 18, 16, 0.22), 0 2px 6px rgba(20, 18, 16, 0.08);
+}
+.card-empty {
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surf);
+  font: 13px var(--mono);
+  color: var(--mute);
+  text-align: center;
+}
+
+/* Code panels */
+.panel {
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--c-border);
+  border-radius: 18px;
+  overflow: hidden;
+  color: var(--c-plain);
+}
+.panel-pad {
+  padding: 22px;
+  border-radius: 12px;
+}
+.panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--c-border);
+  font: 13px var(--mono);
+  color: var(--c-file);
+}
+.panel-head-split {
+  justify-content: space-between;
+}
+.panel-head-split > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.editable {
+  color: var(--c-kw);
+}
+.code {
+  padding: 18px 0 22px;
+  font: 13px/24px var(--mono);
+  overflow-x: auto;
+}
+#hero-code {
+  min-height: 300px;
+}
+.code-tight {
+  padding: 16px 0;
+}
+.panel-pad.code {
+  padding: 16px 0;
+}
+.ln {
+  display: flex;
+  white-space: pre;
+}
+.ln-n {
+  flex: none;
+  width: 28px;
+  padding-right: 14px;
+  box-sizing: content-box;
+  text-align: right;
+  color: var(--c-gutter);
+  user-select: none;
+}
+.ln-error {
+  background: var(--c-err-bg);
+}
+.ln-error .ln-n {
+  color: var(--c-err);
+}
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 18px;
+  margin: 0 -1px;
+  vertical-align: -4px;
+  background: var(--c-brewer);
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.tok-brewer {
+  color: var(--c-brewer);
+  font-weight: 700;
+}
+.tok-time {
+  color: var(--c-time);
+}
+.tok-amount {
+  color: var(--c-amount);
+}
+.tok-temp {
+  color: var(--c-temp);
+}
+.tok-dur {
+  color: var(--c-dur);
+}
+.tok-action {
+  color: var(--c-action);
+}
+.tok-kw {
+  color: var(--c-kw);
+  font-weight: 600;
+}
+.tok-qual {
+  color: var(--c-qual);
+}
+.tok-grind {
+  color: var(--c-grind);
+}
+.tok-comment {
+  color: var(--c-comment);
+  font-style: italic;
+}
+.tok-punct {
+  color: var(--c-punct);
+}
+.tok-fmkey {
+  color: var(--c-fmkey);
+}
+.tok-fmval {
+  color: var(--c-fmval);
+}
+.tok-error {
+  text-decoration: underline wavy var(--c-err);
+  text-underline-offset: 4px;
+}
+
+/* Sections */
+.band {
+  border-top: 1px solid var(--line);
+  padding: 96px 0;
+}
+.eyebrow {
+  margin: 0 0 16px;
+  font: 13px var(--mono);
+  color: var(--acc-ink);
+}
+.band .wrap > h2,
+.band-head h2 {
+  max-width: 760px;
+  margin-bottom: 48px;
+  font-size: 52px;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+.band-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+.band-head h2 {
+  margin-bottom: 0;
+}
+.band-lead {
+  margin: 16px 0 0;
+  font-size: 19px;
+  color: var(--mute);
+}
+.band-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Why Brewlang */
+.args {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 20px;
+}
+.arg {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px;
+  border-radius: 18px;
+  background: var(--surf);
+  border: 1px solid var(--line);
+}
+.arg-wide {
+  grid-column: span 3;
+}
+.arg h3 {
+  margin-bottom: 6px;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+.arg p {
+  margin: 0;
+  font-size: 17px;
+  color: var(--mute);
+}
+.arg > .panel,
+.arg-foot {
+  margin-top: auto;
+}
+.jot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  min-height: 58px;
+  font-family: var(--mono);
+}
+.jot-part {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.jot-part > span:first-child {
+  font-size: 22px;
+  white-space: pre;
+}
+.jot-label {
+  font: 12px var(--mono);
+  color: var(--c-label);
+}
+.header-line {
+  margin-bottom: 10px;
+  font: 22px var(--mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fade {
+  animation: rise 0.35s ease-out both;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.segmented {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.segmented button {
+  flex: 1;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font: 600 15px var(--mono);
+  cursor: pointer;
+}
+.segmented button[aria-pressed="true"],
+.chips button[aria-pressed="true"] {
+  border-color: var(--acc);
+  background: var(--acc-tint);
+  color: var(--acc-ink);
+}
+.unit-values {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.unit-values div {
+  padding: 14px 12px;
+  border-radius: 12px;
+  background: var(--soft);
+}
+.unit-values dt {
+  font-size: 12px;
+  color: var(--mute);
+}
+.unit-values dd {
+  margin: 4px 0 0;
+  font: 600 18px var(--mono);
+  white-space: nowrap;
+}
+.errors {
+  margin-top: auto;
+  border-radius: 12px;
+}
+.error-message {
+  display: flex;
+  gap: 10px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--c-border);
+  font: 12px/18px var(--mono);
+  color: var(--c-err-text);
+}
+.error-message span:first-child {
+  flex: none;
+  color: var(--c-err);
+}
+
+/* Brew with */
+.brewers {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+.brewers li {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--surf);
+  font-size: 18px;
+  font-weight: 600;
+}
+.brewers svg {
+  width: 44px;
+  height: 44px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.home .brewers .brewers-more {
+  gap: 10px;
+  border-style: dashed;
+  background: transparent;
+}
+.plus {
+  font: 28px var(--mono);
+  color: var(--acc-ink);
+}
+.more-note {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--mute);
+}
+
+/* Real recipes */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.chips button {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surf);
+  color: var(--ink);
+  font: 650 15px var(--display);
+  text-align: left;
+  cursor: pointer;
+}
+.chips button span {
+  font: 11px var(--mono);
+  opacity: 0.75;
+}
+.workbench {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+.editor-scroll {
+  overflow-x: auto;
+}
+.editor {
+  display: grid;
+  min-width: 100%;
+  width: max-content;
+}
+.editor > .code,
+.editor > textarea {
+  grid-area: 1 / 1;
+  margin: 0;
+  overflow: hidden;
+}
+.editor > textarea {
+  width: 100%;
+  height: 100%;
+  padding: 18px 20px 22px 42px;
+  border: 0;
+  outline: none;
+  resize: none;
+  white-space: pre;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--c-brewer);
+  font: 13px/24px var(--mono);
+}
+.editor > textarea::selection {
+  background: rgba(127, 127, 127, 0.3);
+}
+.editor > .code {
+  padding-right: 20px;
+}
+.problems {
+  list-style: none;
+  margin: 0;
+  padding: 14px 20px;
+  border-top: 1px solid var(--c-border);
+  font: 13px/20px var(--mono);
+}
+.problem {
+  display: flex;
+  gap: 10px;
+}
+.problem-pos {
+  flex: none;
+}
+.problem-error {
+  color: var(--c-err-text);
+}
+.problem-error .problem-pos {
+  color: var(--c-err);
+}
+.problem-warning,
+.problem-suggestion {
+  color: var(--c-label);
+}
+.problem-ok {
+  color: var(--c-amount);
+}
+
+/* Developers */
+.dev {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.dev-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px;
+  border-radius: 18px;
+  background: var(--surf);
+  border: 1px solid var(--line);
+}
+.dev-card h3 {
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+.dev-card p {
+  margin: 0;
+  font-size: 16px;
+  color: var(--mute);
+}
+.home .dev-card > a {
+  font-weight: 600;
+  color: var(--acc-ink);
+}
+.snippet {
+  margin: auto 0 0;
+  font: 13px/22px var(--mono);
+  overflow-x: auto;
+}
+.dev-card-ink {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+.home .dev-card-ink p {
+  color: var(--bg);
+  opacity: 0.75;
+}
+.copy {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(127, 127, 127, 0.4);
+}
+.copy code {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 14px var(--mono);
+}
+
+/* Closing */
+.closing {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 120px 0;
+}
+.closing h2 {
+  max-width: 900px;
+  margin-bottom: 36px;
+  font-size: 72px;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+.home .closing h2 em {
+  color: var(--acc);
+}
+.closing .hero-cta {
+  margin-top: 0;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-top: 40px;
+  padding-bottom: 56px;
+  font-size: 15px;
+  color: var(--mute);
+}
+.footer-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.footer .wordmark {
+  font-size: 18px;
+  color: var(--ink);
+}
+.version {
+  font: 13px var(--mono);
+}
+.footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+/* The recipe cards: @brewlang/render's, on the page's tokens */
+.home .brew-card {
+  --brew-bg: var(--surf);
+  --brew-ink: var(--ink);
+  --brew-muted: var(--mute);
+  --brew-faint: var(--mute);
+  --brew-rule: var(--line);
+  --brew-rule-soft: var(--soft);
+  --brew-soft: var(--soft);
+  --brew-accent: var(--acc-ink);
+  --brew-qual: var(--chip);
+  --brew-qual-line: var(--chip-line);
+  --brew-font-display: var(--display);
+  --brew-font-body: var(--display);
+  --brew-font-mono: var(--mono);
+  --brew-radius: 18px;
+  padding: 28px;
+}
+.home .brew-title {
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.025em;
+}
+.home .brew-spec dd {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Medium screens: the hero stacks */
+@media (max-width: 1000px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "text" "cta" "chips" "demo";
+  }
+  .hero-text {
+    padding-top: 0;
+  }
+  .hero-demo {
+    margin-top: 56px;
+  }
+  .args .arg {
+    grid-column: span 3;
+  }
+  .brewers {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .dev {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .closing h2 {
+    font-size: 56px;
+  }
+}
+
+/* Phones: the menu, the demo in tabs, one column */
+@media (max-width: 760px) {
+  .wrap {
+    padding-inline: 16px;
+  }
+  .wide-only {
+    display: none !important;
+  }
+  .narrow-only {
+    display: inline-flex;
+  }
+  .nav-links {
+    gap: 8px;
+  }
+  .hero {
+    grid-template-areas: "text" "demo" "cta" "chips";
+    padding-top: 40px;
+    padding-bottom: 64px;
+  }
+  .hero h1 {
+    font-size: 44px;
+  }
+  .hero-demo {
+    margin-top: 32px;
+  }
+  #hero-code {
+    min-height: 0;
+  }
+  .tabs {
+    display: flex;
+  }
+  .demo-label {
+    display: none;
+  }
+  .stage-code,
+  .stage-card,
+  .stage-hint {
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
+  .stage[data-view="code"] .stage-card,
+  .stage[data-view="recipe"] .stage-code {
+    display: none;
+  }
+  .band {
+    padding: 64px 0;
+  }
+  .band .wrap > h2,
+  .band-head h2 {
+    font-size: 36px;
+  }
+  .args .arg {
+    grid-column: span 6;
+  }
+  .brewers {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .workbench {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .closing {
+    padding: 80px 0;
+  }
+  .closing h2 {
+    font-size: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade,
+  .caret {
+    animation: none;
+  }
+}
