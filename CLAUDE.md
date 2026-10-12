@@ -12,17 +12,17 @@ brewlang.github.io is the site of Brewlang, the `.brew` coffee recipe language: 
 
 ## Dependency on brewlang
 
-- `"brewlang": "file:../brewlang/packages/brewlang"` links the sibling repo's package; it resolves to its `dist/`, so run `npm run build` in `../brewlang` after changing it.
+- `"brewlang": "file:../brewlang/packages/brewlang"` and `"@brewlang/render": "file:../brewlang/packages/render"` link the sibling repo's packages; they resolve to their `dist/`, so run `npm run build` at the root of `../brewlang` after changing it.
 - `src/pages/llms.txt.ts` serves `../brewlang/docs/llms.txt` (a `?raw` import; `vite.server.fs.allow: [".."]` lets the dev server read it). `llms.txt` stays in the brewlang repo, tested with the language and also served by the playground. Change it there.
 - `.github/workflows/deploy.yml` checks out both repos side by side, builds brewlang, tests and builds the site, and publishes it on GitHub Pages from `main`. It also runs weekly, so a language change that breaks the docs shows up.
 
 ## Analytics
 
-Cloudflare Web Analytics counts visits, without cookies: its script is added to every page by `head` in `astro.config.mjs`. The playground loads the same script with the same token, so both show in one Cloudflare dashboard.
+Cloudflare Web Analytics counts visits, without cookies: its script is added to every docs page by `head` in `astro.config.mjs`, and to the home page by `src/pages/index.astro`. The playground loads the same script with the same token, so both show in one Cloudflare dashboard.
 
 ## Content
 
-- `src/content/docs/index.mdx` — the home page, a Starlight `splash` page for now (a custom design may replace it in `src/pages/`).
+- `src/pages/index.astro` — the home page, outside Starlight (its own layout, Bricolage Grotesque and JetBrains Mono, a `#d42e3b` accent; light code panels on the light theme, dark ones on the dark theme). Every recipe on it goes through the real `brewlang` and `@brewlang/render`: at build time in the page, then in `src/home/home.ts` in the browser (the hero typed once, the rotating cards, scaling and units, the editable recipes). `src/home/content.ts` holds its recipes (the full ones are `../brewlang/examples/*.brew`, read with `?raw`), `src/home/highlight.ts` colors code from brewlang's `lex()` like the playground, `src/home/home.css` holds its tokens and maps them onto the cards' `--brew-*` variables. The theme uses Starlight's `starlight-theme` key, so the home page and the docs share the reader's choice. The design is the "Brewlang Home" canvas (claude.ai/design).
 - `src/content/docs/doc/` — the documentation: `guide/` for recipe writers, `reference/vocabulary.md`, `integrate/` for developers, `spec/v0.md` (the language spec: grammar, semantic rules, conformance). The sidebar is set by hand in `astro.config.mjs`: add new pages there.
 - Links between pages are absolute: `/doc/guide/writing-recipes/`.
 - Code blocks of recipes use ```` ```brew ````, colored by `brew.tmLanguage.json` (one scope per role, like the playground's `src/highlight.ts`) with the playground's colors, added to Starlight's themes by `brew-theme.mjs`. Change a color in both places. After changing the grammar, delete `.astro/` and `node_modules/.astro/`: the build caches it. `tests/docs.test.ts` checks every block holding a whole recipe (a line starting with `@`): no diagnostic at all, or at least one error for a block marked ```` ```brew invalid ````. It also checks that `reference/vocabulary.md` names every brewer, action, alias, grind size, qualifier and unit of the language.

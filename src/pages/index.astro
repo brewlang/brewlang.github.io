@@ -1,0 +1,307 @@
+---
+// The home page, outside Starlight: its own layout and look. Every recipe on it goes through the
+// real brewlang and @brewlang/render, here at build time and in src/home/home.ts in the browser
+import "@brewlang/render/brew.css";
+import "../home/home.css";
+import { render } from "@brewlang/render";
+import { check, parse, format } from "brewlang";
+import { CONVERTED, EXAMPLES, HEADERS, HERO, JOT, SCALED, WRONG } from "../home/content";
+import { highlight } from "../home/highlight";
+
+const lines = (html: string[]) => html.map((code, i) => ({ n: i + 1, code: code || " " }));
+
+const hero = { code: lines(highlight(HERO.source)), card: render(HERO.source).html };
+const scaled = lines(highlight(format(parse(SCALED).recipe).trimEnd()));
+const unitSpecs = (render(CONVERTED).model?.specs ?? []).slice(0, 3);
+const wrong = check(WRONG);
+const wrongError = wrong.diagnostics.find((d) => d.severity === "error")!;
+const wrongCode = lines(highlight(WRONG, wrong.diagnostics));
+const first = EXAMPLES[0]!;
+const firstCheck = check(first.source);
+const firstErrors = new Set(firstCheck.diagnostics.filter((d) => d.severity === "error").map((d) => d.line));
+const editor = { code: lines(highlight(first.source, firstCheck.diagnostics)), card: render(first.source).html };
+const [jot] = JOT;
+const [headerLine] = HEADERS;
+
+const title = "Brewlang — coffee recipes in plain text";
+const description = "Write your coffee recipe in a few simple lines. Brewlang turns it into a brew sheet you can scale, share and follow step by step.";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://brewlang.github.io/" />
+    <!-- The theme before the first paint: the reader's choice (shared with the docs), else the system's -->
+    <script is:inline>
+      try {
+        const saved = localStorage.getItem("starlight-theme");
+        const dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+      } catch {
+        document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&display=swap"
+    />
+    <!-- Cloudflare Web Analytics: cookieless visit counts, the same token as the docs and the playground -->
+    <script is:inline type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bead6919586742c4abb3fe181d4c1385"}'></script>
+  </head>
+  <body class="home">
+    <header class="topbar">
+      <nav class="wrap nav" aria-label="Main">
+        <a class="wordmark" href="/">Brewlang</a>
+        <div class="nav-links">
+          <a class="wide-only" href="/doc/">Docs</a>
+          <a class="wide-only" href="/doc/spec/v0/">Spec</a>
+          <a class="wide-only llms-link" href="/llms.txt"><span class="llms-tag">llms.txt</span><span>For AI agents</span></a>
+          <a class="wide-only" href="https://github.com/brewlang/brewlang">GitHub</a>
+          <a class="wide-only button button-ink button-small" href="/playground/">Playground</a>
+          <button type="button" class="wide-only icon-button" data-theme-toggle aria-label="Switch theme">
+            <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+            <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>
+          </button>
+          <button type="button" class="narrow-only icon-button" id="menu-button" aria-label="Menu" aria-expanded="false" aria-controls="menu">
+            <svg class="icon-burger" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+            <svg class="icon-close" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+          </button>
+        </div>
+      </nav>
+      <div class="wrap menu" id="menu" hidden>
+        <a href="/doc/">Docs</a>
+        <a href="/doc/spec/v0/">Spec</a>
+        <a href="/llms.txt">For AI agents · llms.txt</a>
+        <a href="https://github.com/brewlang/brewlang">GitHub</a>
+        <button type="button" data-theme-toggle><span class="if-light">Dark theme</span><span class="if-dark">Light theme</span></button>
+        <a class="button button-ink" href="/playground/">Open the playground</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="wrap hero">
+        <div class="hero-text">
+          <p class="kicker"><span class="dot"></span>Coffee recipes, in plain text</p>
+          <h1>For people who weigh their coffee and <em>tweak</em> their recipes.</h1>
+          <p class="lead">Write your recipe in a few simple lines. Brewlang turns it into a brew sheet you can scale, share and follow step by step.</p>
+        </div>
+        <div class="hero-cta">
+          <a class="button button-accent" href="/playground/">Try it in the playground <span aria-hidden="true">→</span></a>
+          <a class="button button-outline" href="/doc/guide/getting-started/">Get started</a>
+        </div>
+        <ul class="hero-chips">
+          <li>Plain text</li>
+          <li>Open source</li>
+          <li>Runs in your browser</li>
+        </ul>
+
+        <div class="hero-demo">
+          <div class="tabs" role="tablist" aria-label="View">
+            <button type="button" role="tab" data-tab="code" aria-selected="true">Code</button>
+            <button type="button" role="tab" data-tab="recipe" aria-selected="false">Recipe</button>
+          </div>
+          <div class="stage" id="demo" data-view="code">
+            <div class="stage-code">
+              <div class="demo-label">What you type</div>
+              <div class="panel">
+                <div class="panel-head"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"></path><path d="M14 2v6h6"></path></svg>{HERO.file}</div>
+                <div class="code" id="hero-code">{hero.code.map((l) => <div class="ln"><span class="ln-n">{l.n}</span><span class="ln-c" set:html={l.code} /></div>)}</div>
+              </div>
+            </div>
+            <div class="stage-card">
+              <div class="demo-label demo-label-end">What you get</div>
+              <div class="lifted" id="hero-card" set:html={hero.card} />
+            </div>
+            <p class="stage-hint">That's a whole recipe. <a href="#recipes">Add details when you need them ↓</a></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="wrap">
+          <p class="eyebrow">Why Brewlang</p>
+          <h2>A recipe you can read, and a sheet you can use.</h2>
+          <div class="args">
+            <article class="arg arg-wide">
+              <div><h3>Write it like you'd jot it down</h3><p>No forms, no JSON. Just text.</p></div>
+              <div class="panel panel-pad">
+                <div class="jot fade" id="jot">
+                  {jot!.map(([text, role, label]) => <div class="jot-part"><span class={`tok-${role}`}>{text}</span><span class="jot-label">{label}</span></div>)}
+                </div>
+              </div>
+            </article>
+            <article class="arg arg-wide">
+              <div><h3>One format, every brewer</h3><p>V60 to siphon, every recipe reads the same.</p></div>
+              <div class="panel panel-pad">
+                <div class="header-line fade" id="header-line"><span class="tok-brewer">{headerLine![0]}</span> <span class="tok-amount">{headerLine![1]}</span></div>
+                <div class="jot-label" id="header-kind">{headerLine![2]}</div>
+              </div>
+            </article>
+            <article class="arg">
+              <div><h3>Scale in one tap</h3><p>Change the dose, every pour follows.</p></div>
+              <div class="arg-foot">
+                <div class="segmented" role="group" aria-label="Dose">
+                  {[15, 18, 20].map((d) => <button type="button" data-dose={d} aria-pressed={String(d === 15)}>{d}g</button>)}
+                </div>
+                <div class="panel panel-pad code code-tight" id="scaled">{scaled.map((l) => <div class="ln"><span class="ln-n">{l.n}</span><span class="ln-c" set:html={l.code} /></div>)}</div>
+              </div>
+            </article>
+            <article class="arg">
+              <div><h3>Your units, their units</h3><p>Written in grams and °C, read in ounces and °F.</p></div>
+              <div class="arg-foot">
+                <div class="segmented" role="group" aria-label="Units">
+                  <button type="button" data-units="metric" aria-pressed="true">g · °C</button>
+                  <button type="button" data-units="imperial" aria-pressed="false">oz · °F</button>
+                </div>
+                <dl class="unit-values">
+                  {unitSpecs.map((s) => <div><dt>{s.label}</dt><dd data-unit-value>{s.value}</dd></div>)}
+                </dl>
+              </div>
+            </article>
+            <article class="arg">
+              <div><h3>Errors that help</h3><p>It catches what doesn't add up, and tells you how to fix it.</p></div>
+              <div class="panel errors">
+                <div class="code code-tight">{wrongCode.map((l) => <div class:list={["ln", { "ln-error": l.n === wrongError.line }]}><span class="ln-n">{l.n}</span><span class="ln-c" set:html={l.code} /></div>)}</div>
+                <div class="error-message"><span>{wrongError.line}:{wrongError.column}</span><span>{wrongError.message}</span></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="wrap">
+          <p class="eyebrow">Brew with</p>
+          <h2>Your brewer is already there.</h2>
+          <ul class="brewers">
+            <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M7 10h26L22 29h-4z"></path><path d="M13 15l5 8M20 13v10M27 15l-5 8"></path><path d="M13 33h14"></path></svg>V60</li>
+            <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M11 5h18l-7 13v4l7 13H11l7-13v-4z"></path><path d="M16 17h8v6h-8z"></path></svg>Chemex</li>
+            <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M7 10l3 3 3-3 3 3 3-3 3 3 3-3 3 3 3-3 3 3-11 16h-4z"></path><path d="M13 33h14"></path></svg>Origami</li>
+            <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M7 10h26l-6 18H13z"></path><path d="M10 15c3 2 5-2 8 0s5 2 8 0 4-1 5 0"></path><path d="M14 33h12"></path></svg>Kalita</li>
+            <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M15 3h10v12H15z"></path><path d="M13 12h14v20H13z"></path><path d="M10 34h20"></path><path d="M16 20h8M16 25h8"></path></svg>AeroPress</li>
+            <li><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="18" cy="4" r="2"></circle><path d="M18 6v12"></path><path d="M9 10h18"></path><path d="M11 10h14v24H11z"></path><path d="M11 18h14"></path><path d="M25 14h5v14h-5"></path></svg>French press</li>
+            <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M7 8h26l-9 17h-8z"></path><path d="M12 25h16v9H12z"></path><path d="M28 29h5"></path></svg>Switch</li>
+            <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 8h26"></path><path d="M8 11h22l-4 16H12z"></path><path d="M30 13h4v9h-5"></path><path d="M14 27v6h10v-6"></path></svg>Clever</li>
+            <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M14 3h12l-2 12h-8z"></path><path d="M20 15v7"></path><circle cx="20" cy="28" r="6"></circle><path d="M10 37h20"></path><path d="M12 37l3-6M28 37l-3-6"></path></svg>Siphon</li>
+            <li class="brewers-more"><span class="plus">+</span>and more<span class="more-note">Melitta, UFO, Phin, Pulsar, or any brewer you name.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="band" id="recipes">
+        <div class="wrap">
+          <p class="eyebrow">Real recipes</p>
+          <div class="band-head">
+            <div>
+              <h2>Five brewers, one way to write them.</h2>
+              <p class="band-lead">Pick a recipe, then edit the code: the brew sheet follows.</p>
+            </div>
+            <div class="band-actions">
+              <button type="button" class="button button-outline button-small" id="editor-reset">Reset</button>
+              <a class="button button-ink button-small" href="/playground/">Open in the playground →</a>
+            </div>
+          </div>
+          <div class="chips" role="group" aria-label="Recipe">
+            {EXAMPLES.map((e, i) => <button type="button" data-example={e.id} aria-pressed={String(i === 0)}><strong>{e.label}</strong><span>{e.sub}</span></button>)}
+          </div>
+          <div class="workbench">
+            <div class="panel">
+              <div class="panel-head panel-head-split">
+                <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"></path><path d="M14 2v6h6"></path></svg><span id="editor-file">{first.file}</span></span>
+                <span class="editable">editable</span>
+              </div>
+              <div class="editor-scroll">
+                <div class="editor">
+                  <div class="code" id="editor-code" aria-hidden="true">{editor.code.map((l) => <div class:list={["ln", { "ln-error": firstErrors.has(l.n) }]}><span class="ln-n">{l.n}</span><span class="ln-c" set:html={l.code} /></div>)}</div>
+                  <label class="visually-hidden" for="editor">Recipe source</label>
+                  <textarea id="editor" data-example={first.id} spellcheck="false" wrap="off" autocomplete="off" autocapitalize="off">{first.source}</textarea>
+                </div>
+              </div>
+              <ul class="problems" id="problems" aria-live="polite">
+                {firstCheck.diagnostics.length
+                  ? firstCheck.diagnostics.map((d) => <li class={`problem problem-${d.severity}`}><span class="problem-pos">{d.line}:{d.column}</span><span>{d.message}</span></li>)
+                  : <li class="problem problem-ok">No problems</li>}
+              </ul>
+            </div>
+            <div id="editor-card" set:html={editor.card} />
+          </div>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="wrap">
+          <p class="eyebrow">Developers</p>
+          <div class="band-head">
+            <h2>Building a coffee app? Brewlang is open source.</h2>
+            <a class="button button-outline" href="https://github.com/brewlang/brewlang">GitHub</a>
+          </div>
+          <div class="dev">
+            <article class="dev-card">
+              <h3>Parse, check, export</h3>
+              <p>A TypeScript library with no runtime dependencies. Diagnostics never throw.</p>
+              <pre class="panel panel-pad snippet"><span class="tok-action">import</span> {"{ check, toJson }"} <span class="tok-action">from</span> <span class="tok-fmval">"brewlang"</span>;
+
+<span class="tok-action">const</span> {"{ recipe, diagnostics }"} =
+  check(source);
+<span class="tok-action">const</span> json = toJson(recipe);</pre>
+              <a href="/doc/integrate/library/">The library →</a>
+            </article>
+            <article class="dev-card">
+              <h3>Drop a card in any page</h3>
+              <p>The &lt;brew-recipe&gt; element renders the sheet, styled with plain CSS variables.</p>
+              <pre class="panel panel-pad snippet"><span class="tok-action">import</span> <span class="tok-fmval">"@brewlang/render/element"</span>;
+
+<span class="tok-kw">&lt;brew-recipe</span>
+  <span class="tok-qual">src</span>=<span class="tok-fmval">"v60.brew"</span>
+  <span class="tok-qual">scale</span>=<span class="tok-fmval">"1.5"</span><span class="tok-kw">&gt;</span>
+<span class="tok-kw">&lt;/brew-recipe&gt;</span></pre>
+              <a href="/doc/integrate/render/">Recipe cards →</a>
+            </article>
+            <article class="dev-card dev-card-ink">
+              <h3>For AI agents</h3>
+              <p>Point your assistant to llms.txt: the whole language on one page, so it writes valid recipes.</p>
+              <div class="copy">
+                <code>brewlang.github.io/llms.txt</code>
+                <button type="button" class="button button-accent button-small" id="copy-llms">Copy</button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="closing">
+        <div class="wrap">
+          <h2>Write your next recipe in <em>plain text.</em></h2>
+          <div class="hero-cta">
+            <a class="button button-accent" href="/playground/">Try it in the playground <span aria-hidden="true">→</span></a>
+            <a class="button button-outline-light" href="/doc/guide/getting-started/">Get started</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="wrap footer">
+      <div class="footer-brand"><span class="wordmark">Brewlang</span><span class="version">v0</span></div>
+      <nav aria-label="Footer">
+        <a href="/doc/">Docs</a>
+        <a href="/doc/spec/v0/">Spec</a>
+        <a href="/playground/">Playground</a>
+        <a href="/llms.txt">llms.txt</a>
+        <a href="https://github.com/brewlang/brewlang">GitHub</a>
+        <span>MIT License</span>
+      </nav>
+    </footer>
+
+    <script>
+      import "../home/home.ts";
+    </script>
+  </body>
+</html>
