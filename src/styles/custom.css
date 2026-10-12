@@ -1,0 +1,67 @@
+/* The docs in the home page's look (src/home/home.css): Bricolage Grotesque and JetBrains Mono,
+ * the coffee-cherry red, warm grays. Starlight's layout stays; only its variables change. */
+
+:root {
+  --sl-font: "Bricolage Grotesque", system-ui, sans-serif;
+  --sl-font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  /* Dark theme, Starlight's default */
+  --sl-color-accent-low: #361f1e;
+  --sl-color-accent: #d8434f;
+  --sl-color-accent-high: #f3b3b8;
+  --sl-color-white: #f1ede5;
+  --sl-color-gray-1: #e4ded3;
+  --sl-color-gray-2: #c4bdb1;
+  --sl-color-gray-3: #a39c90;
+  --sl-color-gray-4: #6e665b;
+  --sl-color-gray-5: #34302a;
+  --sl-color-gray-6: #1b1916;
+  --sl-color-black: #12110f;
+}
+
+:root[data-theme="light"] {
+  --sl-color-accent-low: #f9e2e4;
+  --sl-color-accent: #a5242e;
+  --sl-color-accent-high: #6e1219;
+  --sl-color-white: #141210;
+  --sl-color-gray-1: #1f1c18;
+  --sl-color-gray-2: #3a352e;
+  --sl-color-gray-3: #5f5a52;
+  --sl-color-gray-4: #8a8378;
+  --sl-color-gray-5: #c8c2b6;
+  --sl-color-gray-6: #e6e2da;
+  --sl-color-gray-7: #ece9e2;
+  --sl-color-black: #f4f3ef;
+}
+
+/* The wordmark, as on the home page */
+.site-title {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* Headings in the home page's tight bold style */
+.sl-markdown-content :is(h1, h2, h3),
+h1#_top {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+/* The top bar on the page's own background, like the home page */
+:root,
+:root[data-theme="light"] {
+  --sl-color-bg-nav: var(--sl-color-black);
+}
+
+/* The wordmark in ink, not in the accent */
+.site-title {
+  color: var(--sl-color-white);
+}
+
+/* The current page in the sidebar: a pale tint of the accent, like the home page's pressed buttons */
+.sidebar-content a[aria-current="page"],
+.sidebar-content a[aria-current="page"]:hover,
+.sidebar-content a[aria-current="page"]:focus {
+  background-color: var(--sl-color-accent-low);
+  color: var(--sl-color-white);
+}
