@@ -282,8 +282,8 @@ body.home {
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  grid-template-areas: "text demo" "cta demo" "chips demo";
-  grid-template-rows: auto auto 1fr;
+  grid-template-areas: "text demo" "cta demo" "also demo" "chips demo";
+  grid-template-rows: auto auto auto 1fr;
   column-gap: 56px;
   align-items: start;
   padding-top: 72px;
@@ -299,6 +299,18 @@ body.home {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 36px;
+}
+/* The Obsidian plugin, a line under the buttons */
+.hero-also {
+  grid-area: also;
+  margin: 16px 0 0;
+  font-size: 14px;
+  color: var(--mute);
+}
+.hero-also a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .hero-chips {
   grid-area: chips;
@@ -1011,7 +1023,7 @@ body.home {
 @media (max-width: 1000px) {
   .hero {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "text" "cta" "chips" "demo";
+    grid-template-areas: "text" "cta" "also" "chips" "demo";
   }
   .hero-text {
     padding-top: 0;
@@ -1048,7 +1060,7 @@ body.home {
     gap: 8px;
   }
   .hero {
-    grid-template-areas: "text" "demo" "cta" "chips";
+    grid-template-areas: "text" "demo" "cta" "also" "chips";
     padding-top: 40px;
     padding-bottom: 64px;
   }
