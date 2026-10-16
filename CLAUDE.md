@@ -22,7 +22,7 @@ Cloudflare Web Analytics counts visits, without cookies: its script is added to 
 
 ## SEO
 
-- `public/`: `favicon.svg` (a white Bricolage Grotesque B, as a path, on the accent; also Starlight's favicon), `apple-touch-icon.png` (the same icon, square, 180px), `og.png` (the share preview, 1200×630, a screenshot of a page in the home page's look) and `robots.txt` (points to the sitemap).
+- `public/`: `favicon.svg` (a white Bricolage Grotesque B, as a path, on the accent; also Starlight's favicon), `apple-touch-icon.png` (the same icon, square, 180px), `og.png` (the share preview, 1200×630, a screenshot of a page in the home page's look), `robots.txt` (points to the sitemap) and `googlea51a46ac142b96b4.html` (the Search Console verification: keep it).
 - The sitemap is `@astrojs/sitemap`, added in `astro.config.mjs` so it also lists `/playground/` (`customPages`); Starlight skips its own when it is there.
 - The home page sets its own canonical, Open Graph tags and JSON-LD (`WebSite` for the site name in Google, `SoftwareSourceCode`); Starlight sets the docs' canonical and Open Graph tags from each page's `title` and `description`, plus the `og:image` from `head`. Give every new page a `description`.
 - The playground's `index.html` points to the same icons and image.
