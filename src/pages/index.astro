@@ -25,6 +25,19 @@ const [headerLine] = HEADERS;
 
 const title = "Brewlang - coffee recipes in plain text";
 const description = "Write your coffee recipe in a few simple lines. Brewlang turns it into a brew sheet you can scale, share and follow step by step.";
+const jsonLd = [
+  { "@context": "https://schema.org", "@type": "WebSite", name: "Brewlang", alternateName: "brewlang.github.io", url: "https://brewlang.github.io/" },
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    name: "Brewlang",
+    description,
+    url: "https://brewlang.github.io/",
+    codeRepository: "https://github.com/brewlang/brewlang",
+    programmingLanguage: "TypeScript",
+    license: "https://opensource.org/licenses/MIT",
+  },
+];
 ---
 
 <!doctype html>
@@ -34,9 +47,25 @@ const description = "Write your coffee recipe in a few simple lines. Brewlang tu
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href="https://brewlang.github.io/" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#d42e3b" />
+    <!-- The preview when the link is shared; the docs pages get the same image from astro.config.mjs -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Brewlang" />
+    <meta property="og:locale" content="en" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content="https://brewlang.github.io/" />
+    <meta property="og:image" content="https://brewlang.github.io/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Brewlang: coffee recipes in plain text, next to a V60 recipe in .brew" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- Structured data: the site's name for Google, and what Brewlang is -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <!-- The theme before the first paint: the reader's choice (shared with the docs), else the system's -->
     <script is:inline>
       try {

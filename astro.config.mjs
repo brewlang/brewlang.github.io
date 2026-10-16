@@ -2,6 +2,7 @@
 import { readFileSync } from "node:fs";
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+import sitemap from "@astrojs/sitemap";
 import { PANEL, addBrewColors } from "./brew-theme.mjs";
 
 // The .brew grammar, for the ```brew blocks of the docs
@@ -12,6 +13,8 @@ export default defineConfig({
   // llms.txt is read from the brewlang repo next to this one
   vite: { server: { fs: { allow: [".."] } } },
   integrations: [
+    // The sitemap, also listing the playground (its own repo, served on this domain); Starlight skips its own when this one is here
+    sitemap({ customPages: ["https://brewlang.github.io/playground/"] }),
     // Starlight only serves the docs, under /doc; every other page in src/pages is free of it
     starlight({
       title: "Brewlang",
@@ -20,7 +23,14 @@ export default defineConfig({
       // Cloudflare Web Analytics: cookieless visit counts; the playground uses the same token
       // The home page's look: its fonts, then its colors in custom.css
       customCss: ["./src/styles/custom.css"],
+      // Starlight's favicon is public/favicon.svg; the share preview is public/og.png, as on the home page
       head: [
+        { tag: "link", attrs: { rel: "apple-touch-icon", href: "/apple-touch-icon.png" } },
+        { tag: "meta", attrs: { name: "theme-color", content: "#d42e3b" } },
+        { tag: "meta", attrs: { property: "og:image", content: "https://brewlang.github.io/og.png" } },
+        { tag: "meta", attrs: { property: "og:image:width", content: "1200" } },
+        { tag: "meta", attrs: { property: "og:image:height", content: "630" } },
+        { tag: "meta", attrs: { property: "og:image:alt", content: "Brewlang: coffee recipes in plain text, next to a V60 recipe in .brew" } },
         { tag: "link", attrs: { rel: "preconnect", href: "https://fonts.googleapis.com" } },
         { tag: "link", attrs: { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: true } },
         {
