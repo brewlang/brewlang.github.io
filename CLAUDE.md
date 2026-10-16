@@ -20,6 +20,13 @@ brewlang.github.io is the site of Brewlang, the `.brew` coffee recipe language: 
 
 Cloudflare Web Analytics counts visits, without cookies: its script is added to every docs page by `head` in `astro.config.mjs`, and to the home page by `src/pages/index.astro`. The playground loads the same script with the same token, so both show in one Cloudflare dashboard.
 
+## SEO
+
+- `public/`: `favicon.svg` (a white Bricolage Grotesque B, as a path, on the accent; also Starlight's favicon), `apple-touch-icon.png` (the same icon, square, 180px), `og.png` (the share preview, 1200×630, a screenshot of a page in the home page's look), `robots.txt` (points to the sitemap) and `googlea51a46ac142b96b4.html` (the Search Console verification, with a `google-site-verification` meta on the home page: keep both).
+- The sitemap is `@astrojs/sitemap`, added in `astro.config.mjs` so it also lists `/playground/` (`customPages`); Starlight skips its own when it is there.
+- The home page sets its own canonical, Open Graph tags and JSON-LD (`WebSite` for the site name in Google, `SoftwareSourceCode`); Starlight sets the docs' canonical and Open Graph tags from each page's `title` and `description`, plus the `og:image` from `head`. Give every new page a `description`.
+- The playground's `index.html` points to the same icons and image.
+
 ## Content
 
 - `src/pages/index.astro` — the home page, outside Starlight (its own layout, Bricolage Grotesque and JetBrains Mono, a `#d42e3b` accent; light code panels on the light theme, dark ones on the dark theme). Every recipe on it goes through the real `brewlang` and `@brewlang/render`: at build time in the page, then in `src/home/home.ts` in the browser (the hero typed once, the rotating cards, scaling and units, the editable recipes). `src/home/content.ts` holds its recipes (the full ones are `../brewlang/examples/*.brew`, read with `?raw`), `src/home/highlight.ts` colors code from brewlang's `lex()` like the playground, `src/home/home.css` holds its tokens and maps them onto the cards' `--brew-*` variables. The theme uses Starlight's `starlight-theme` key, so the home page and the docs share the reader's choice. The design is the "Brewlang Home" canvas (claude.ai/design).
